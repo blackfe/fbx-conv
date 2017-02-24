@@ -154,6 +154,8 @@ private:
 			return FILETYPE_G3DB;
 		else if (stricmp(arg, "g3dj")==0)
 			return FILETYPE_G3DJ;
+		else if (stricmp(arg, "lua")==0)
+			return FILETYPE_LUA;
 		if (def < 0)
 			log->error(error = log::eCommandLineUnknownFiletype, arg);
 		return def;
@@ -180,6 +182,7 @@ private:
 		case FILETYPE_FBX:	return setExtension(fn, "fbx");
 		case FILETYPE_G3DB:	return setExtension(fn, "g3db");
 		case FILETYPE_G3DJ:	return setExtension(fn, "g3dj");
+		case FILETYPE_LUA:	return setExtension(fn, "lua");
 		default:			return setExtension(fn, "");
 		}
 	}

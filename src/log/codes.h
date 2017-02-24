@@ -75,6 +75,7 @@ LOG_ADD_CODE(eSourceClose)
 
 LOG_ADD_CODE(sExportToG3DB)
 LOG_ADD_CODE(sExportToG3DJ)
+LOG_ADD_CODE(sExportToLUA)
 LOG_ADD_CODE(sExportClose)
 LOG_ADD_CODE(eExportFiletypeUnknown)
 

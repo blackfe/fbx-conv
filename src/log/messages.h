@@ -76,6 +76,7 @@ LOG_SET_MSG(eSourceClose,						"Error closing source file")
 
 LOG_SET_MSG(sExportToG3DB,						"Exporting to G3DB file: %s")
 LOG_SET_MSG(sExportToG3DJ,						"Exporting to G3DJ file: %s")
+LOG_SET_MSG(sExportToLUA,						"Exporting to LUA file: %s")
 LOG_SET_MSG(sExportClose,						"Closing exported file")
 LOG_SET_MSG(eExportFiletypeUnknown,				"Unknown target filetype")
 

@@ -74,11 +74,6 @@ static const char* getTextureUseString(const Material::Texture::Usage &textureUs
 
 void Model::serialize(json::BaseJSONWriter &writer) const {
 	writer.obj(6);
-	writer << "version" = version;
-	writer << "id" = id;
-	writer << "meshes" = meshes;
-	writer << "materials" = materials;
-	writer << "nodes" = nodes;
 	writer << "animations" = animations;
 	writer.end();
 }

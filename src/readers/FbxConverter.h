@@ -32,6 +32,8 @@
 
 using namespace fbxconv::modeldata;
 
+const char *placeHolderMaterialName = "FBXCONV_PLACEHOLDER_MATERIAL";
+
 namespace fbxconv {
 namespace readers {
 	struct TextureFileInfo {
@@ -80,7 +82,6 @@ namespace readers {
 		static const FbxAxisSystem::EFrontVector defaultFrontAxis = FbxAxisSystem::eParityOdd;
 		static const FbxAxisSystem::ECoordSystem defaultCoordSystem = FbxAxisSystem::eRightHanded;
 
-		const char *placeHolderMaterialName = "FBXCONV_PLACEHOLDER_MATERIAL";
 
 		//const char * const &filename, 
 		//const bool &packColors = false, const unsigned int &maxVertexCount = (1<<15)-1, const unsigned int &maxIndexCount = (1<<15)-1,
@@ -701,6 +702,8 @@ namespace readers {
 
 			// Add the NodeAnimations to the Animation
 			for (std::map<FbxNode *, AnimInfo>::const_iterator itr = affectedNodes.begin(); itr != affectedNodes.end(); itr++) {
+				if(strcmp((*itr).first->GetName(),"ball_point") != 0 )
+					continue;
 				Node *node = model->getNode((*itr).first->GetName());
 				if (!node)
 					continue;

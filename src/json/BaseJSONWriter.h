@@ -177,13 +177,14 @@ private:
 		return *this;
 	}
 
-protected:
+public:
 	virtual void writeOpenObject(const bool &varsize, const long long &size, const bool &inl) = 0;
 	virtual void writeCloseObject(const bool &varsize, const long long &size, const bool &inl) = 0;
 	virtual void writeOpenArray(const bool &varsize, const long long &size, const bool &inl) = 0;
 	virtual void writeCloseArray(const bool &varsize, const long long &size, const bool &inl) = 0;
 	virtual void writeNextValue(const bool &first, const bool &newline) = 0;
 	virtual void writeNull() = 0;
+	virtual void writeString(const char * const &value) {}
 	virtual void writeValue(const char * const &value, const bool &iskey = false) = 0;
 	virtual void writeValue(const bool &value, const bool &iskey = false) = 0;
 	virtual void writeValue(const char &value, const bool &iskey = false) = 0;
@@ -304,6 +305,7 @@ private:
 		if (!checkKey()) nextValue(inObject(), false);
 		value(v, block.wroteKey);
 	}
+
 	void __val(const ConstSerializable &v) {
 		v.serialize(*this);
 	}

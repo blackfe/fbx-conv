@@ -41,6 +41,7 @@
 #include "FbxConvCommand.h"
 #include "json/JSONWriter.h"
 #include "json/UBJSONWriter.h"
+#include "json//LuaWriter.h"
 #include "readers/FbxConverter.h"
 
 namespace fbxconv {
@@ -156,13 +157,19 @@ class FbxConv {
 				log->status(log::sExportToG3DJ, settings->outFile.c_str());
 				jsonWriter = new json::JSONWriter(myfile);
 				break;
+			case FILETYPE_LUA: 
+				log->status(log::sExportToLUA, settings->outFile.c_str());
+				jsonWriter = new json::LuaWriter(myfile);
+				break;
 			default: 
 				log->error(log::eExportFiletypeUnknown);
 				break;
 			}
 
 			if (jsonWriter) {
+				jsonWriter->writeString("local fbx_data =");
 				(*jsonWriter) << model;
+				jsonWriter->writeString("return fbx_data;");
 				delete jsonWriter;
 				result = true;
 			}

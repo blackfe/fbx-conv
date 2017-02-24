@@ -28,6 +28,7 @@ namespace fbxconv {
 #define FILETYPE_FBX			0x10
 #define FILETYPE_G3DB			0x20
 #define FILETYPE_G3DJ			0x21
+#define FILETYPE_LUA			0x31
 #define FILETYPE_OUT_DEFAULT	FILETYPE_G3DB
 #define FILETYPE_IN_DEFAULT		FILETYPE_FBX
 
