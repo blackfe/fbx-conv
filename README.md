@@ -1,7 +1,7 @@
 fbx-conv
 ========
 
-代码是从https://github.com/libgdx/fbx-conv修改而来
+代码是从 https://github.com/libgdx/fbx-conv 修改而来
 
 可以直接使用release下编译好的EXE
 
