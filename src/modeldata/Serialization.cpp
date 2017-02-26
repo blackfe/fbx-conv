@@ -189,6 +189,7 @@ void NodePart::serialize(json::BaseJSONWriter &writer) const {
 void Animation::serialize(json::BaseJSONWriter &writer) const {
 	writer.obj(2);
 	writer << "id" = id;
+	writer << "time" = time;
 	writer << "bones" = nodeAnimations;
 	writer.end();
 }

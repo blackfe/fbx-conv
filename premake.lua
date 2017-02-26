@@ -86,10 +86,11 @@ project "fbx-conv"
 		buildoptions { "/MP" }
 		defines {
 			"_CRT_SECURE_NO_WARNINGS",
-			"_CRT_NONSTDC_NO_WARNINGS"
+			"_CRT_NONSTDC_NO_WARNINGS",
+			"_CRT_NO_VA_START_VALIDATION"
 		}
 		includedirs {
-			"J:\\Program Files\\Autodesk\\FBX\\FBX SDK\\2017.1\\include"
+			(FBX_SDK_ROOT .. "/include/".._ACTION.."/x86/debug")
 		}
 		libdirs {			
 			"./libs/libpng/lib/windows/x86",
@@ -103,14 +104,12 @@ project "fbx-conv"
 		
 	configuration { "vs*", "Debug" }
 		libdirs {
-			-- (FBX_SDK_ROOT .. "/lib/vs2010/x86/debug"),
-			"J:\\Program Files\\Autodesk\FBX\\FBX SDK\\2017.1\\lib\\vs2012\\x86\\debug",
+			(FBX_SDK_ROOT .. "/lib/".._ACTION.."/x86/debug"),
 		}
 		
 	configuration { "vs*", "Release" }
 		libdirs {
-			-- (FBX_SDK_ROOT .. "/lib/vs2010/x86/release"),
-			"J:\\Program Files\\Autodesk\FBX\\FBX SDK\\2017.1\\lib\\vs2012\\x86\\release",
+			(FBX_SDK_ROOT .. "/lib/".._ACTION.."/x86/release"),
 		}
 
 	--- LINUX ----------------------------------------------------------

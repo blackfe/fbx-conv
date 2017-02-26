@@ -129,12 +129,12 @@ namespace readers {
 			}
 			if (scene)
 				checkNodes();
-			if (scene)
+			/*if (scene)
 				prefetchMeshes();
 			if (scene)
 				fetchMaterials();
 			if (scene)
-				fetchTextureBounds();
+				fetchTextureBounds();*/
 			return !(scene == 0);
 		}
 
@@ -168,13 +168,15 @@ namespace readers {
 				log->error(log::eSourceLoadGeneral);
 				return false;
 			}
+
+			/*
 			if (textureCallback)
 				textureCallback(textureFiles);
 			for (int i = 0; i < 8; i++) {
 				uvTransforms[i].idt();
 				if (settings->flipV)
 					uvTransforms[i].translate(0.f, 1.f).scale(1.f, -1.f);
-			}
+			}*/
 
 			addMesh(model);
 			addNode(model);
@@ -182,11 +184,12 @@ namespace readers {
 			for (std::vector<Node *>::iterator itr = model->nodes.begin(); itr != model->nodes.end(); ++itr)
 				updateNode(model, *itr);
 
+			/*
 			for (std::map<std::string, Material *>::iterator it = materialsMap.begin(); it != materialsMap.end(); ++it) {
 				model->materials.push_back(it->second);
 				for (std::vector<Material::Texture *>::iterator tt = it->second->textures.begin(); tt != it->second->textures.end(); ++tt)
 					(*tt)->path = textureFiles[(*tt)->path].path;
-			}
+			}*/
 
 			addAnimations(model, scene);
 			return true;
@@ -639,6 +642,8 @@ namespace readers {
 		void addAnimation(Model *const &model, FbxAnimStack * const &animStack) {
 			static std::vector<Keyframe *> frames;
 			static std::map<FbxNode *, AnimInfo> affectedNodes;
+			if (this->settings->anim != "" && strcmp(animStack->GetName(), this->settings->anim.c_str()) != 0)
+				return;
 			affectedNodes.clear();
 
 			FbxTimeSpan animTimeSpan = animStack->GetLocalTimeSpan();
@@ -698,12 +703,16 @@ namespace readers {
 			Animation *animation = new Animation();
 			model->animations.push_back(animation);
 			animation->id = animStack->GetName();
+			animation->time = animStop - animStart;
 			animStack->GetScene()->SetCurrentAnimationStack(animStack);
 
 			// Add the NodeAnimations to the Animation
 			for (std::map<FbxNode *, AnimInfo>::const_iterator itr = affectedNodes.begin(); itr != affectedNodes.end(); itr++) {
-				if(strcmp((*itr).first->GetName(),"ball_point") != 0 )
-					continue;
+				if (this->settings->bone != "")
+				{
+					if (strcmp((*itr).first->GetName(), this->settings->bone.c_str()) != 0)
+						continue;
+				}
 				Node *node = model->getNode((*itr).first->GetName());
 				if (!node)
 					continue;

@@ -36,6 +36,8 @@ struct Settings {
 	std::string inFile;
 	int inType;
 	std::string outFile;
+	std::string anim;
+	std::string bone;
 	int outType;
 	/** Whether to flip the y-component of textures coordinates. */
 	bool flipV;

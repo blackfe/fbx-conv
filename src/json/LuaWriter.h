@@ -111,14 +111,14 @@ public:
 	}
 
 	virtual void writeValue(const int &value, const bool &iskey = false) {
-		sprintf(tmp, "% 3i", value);
+		sprintf(tmp, "%i", value);
 		stream << tmp;
 		if (iskey)
 			stream << keySeparator;
 	}
 
 	virtual void writeValue(const long &value, const bool &iskey = false) {
-		sprintf(tmp, "% 3i", value);
+		sprintf(tmp, "%i", value);
 		stream << tmp;
 		if (iskey)
 			stream << keySeparator;
@@ -127,16 +127,16 @@ public:
 	virtual void writeValue(const float &value, const bool &iskey = false) {
 		if ((value * 0) != 0) {
 			const unsigned int t = (*(unsigned int*)&value) & 0xfeffffff;
-			sprintf(tmp, "% 8f", *(float*)&t);
+			sprintf(tmp, "%.2f", *(float*)&t);
 		} else
-			sprintf(tmp, "% 8f", value);
+			sprintf(tmp, "%.2f", value);
 		stream << tmp;
 		if (iskey)
 			stream << keySeparator;
 	}
 
 	virtual void writeValue(const double &value, const bool &iskey = false) {
-		sprintf(tmp, "% 8f", value);
+		sprintf(tmp, "%.2f", value);
 		stream << tmp;
 		if (iskey)
 			stream << keySeparator;
@@ -149,13 +149,13 @@ public:
 		writeValue((int)value, iskey);
 	}
 	virtual void writeValue(const unsigned int &value, const bool &iskey = false) {
-		sprintf(tmp, "% 3i", value);
+		sprintf(tmp, "%i", value);
 		stream << tmp;
 		if (iskey)
 			stream << keySeparator;
 	}
 	virtual void writeValue(const unsigned long &value, const bool &iskey = false) {
-		sprintf(tmp, "% 3i", value);
+		sprintf(tmp, "%i", value);
 		stream << tmp;
 		if (iskey)
 			stream << keySeparator;

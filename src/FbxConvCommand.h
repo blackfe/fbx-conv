@@ -61,8 +61,12 @@ struct FbxConvCommand {
 					settings->packColors = true;
 				else if ((arg[1] == 'i') && (i + 1 < argc))
 					settings->inType = parseType(argv[++i]);
+				else if ((arg[1] == 'B') && (i + 1 < argc))
+					settings->bone = argv[++i];
 				else if ((arg[1] == 'o') && (i + 1 < argc))
 					settings->outType = parseType(argv[++i]);
+				else if ((arg[1] == 'A') && (i + 1 < argc))
+					settings->anim = argv[++i];
 				else if ((arg[1] == 'b') && (i + 1 < argc))
 					settings->maxNodePartBonesCount = atoi(argv[++i]);
 				else if ((arg[1] == 'w') && (i + 1 < argc))
@@ -103,6 +107,7 @@ struct FbxConvCommand {
 		printf("-i <type>: Set the type of the input file to <type>\n");
 #endif
 		printf("-o <type>: Set the type of the output file to <type>\n");
+		printf("-b name£ºSpecical bone to export. If not set all the bones will be exported\n");
 		printf("-f       : Flip the V texture coordinates.\n");
 		printf("-p       : Pack vertex colors to one float.\n");
 		printf("-m <size>: The maximum amount of vertices or indices a mesh may contain (default: 32k)\n");
