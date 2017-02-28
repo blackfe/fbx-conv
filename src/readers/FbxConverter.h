@@ -634,21 +634,32 @@ namespace readers {
 		/** Add the animations if any */
 		void addAnimations(Model * const &model, const FbxScene * const &source) {
 			const unsigned int animCount = source->GetSrcObjectCount<FbxAnimStack>();
-			for (unsigned int i = 0; i < animCount; i++)
-				addAnimation(model, source->GetSrcObject<FbxAnimStack>(i));
+			for (unsigned int i = 0; i < settings->csvFile->rowCount(); i++)
+			{
+				const std::string animName = (*this->settings->csvFile)[i]["动作名"];
+				int startFrame = std::stoi((*this->settings->csvFile)[i]["起始帧"]);
+				int endFrame = std::stoi((*this->settings->csvFile)[i]["结束帧"]);
+				const std::string sBallPoint = (*this->settings->csvFile)[i]["出手帧"];
+				int ballPointFrame = 0;
+				if (sBallPoint != "")
+				{
+					ballPointFrame = std::stoi(sBallPoint);
+				}
+				addAnimation(model, source->GetSrcObject<FbxAnimStack>(0), (float)startFrame/settings->frameRate*1000, (float)endFrame / settings->frameRate * 1000, animName, (float)ballPointFrame / settings->frameRate * 1000);
+			}
 		}
 
 		/** Add the specified animation to the model */
-		void addAnimation(Model *const &model, FbxAnimStack * const &animStack) {
+		void addAnimation(Model *const &model, FbxAnimStack * const &animStack, float animStart, float animStop,const std::string& animName, float ballPointTime) {
 			static std::vector<Keyframe *> frames;
 			static std::map<FbxNode *, AnimInfo> affectedNodes;
 			if (this->settings->anim != "" && strcmp(animStack->GetName(), this->settings->anim.c_str()) != 0)
 				return;
 			affectedNodes.clear();
 
-			FbxTimeSpan animTimeSpan = animStack->GetLocalTimeSpan();
+			/*FbxTimeSpan animTimeSpan = animStack->GetLocalTimeSpan();
 			float animStart = (float)(animTimeSpan.GetStart().GetMilliSeconds());
-			float animStop = (float)(animTimeSpan.GetStop().GetMilliSeconds());
+			float animStop = (float)(animTimeSpan.GetStop().GetMilliSeconds());*/
 			if (animStop <= animStart)
 				animStop = 999999999.0f;
 
@@ -702,13 +713,18 @@ namespace readers {
 
 			Animation *animation = new Animation();
 			model->animations.push_back(animation);
-			animation->id = animStack->GetName();
+			animation->id = animName;
 			animation->time = animStop - animStart;
 			animStack->GetScene()->SetCurrentAnimationStack(animStack);
 
 			// Add the NodeAnimations to the Animation
 			for (std::map<FbxNode *, AnimInfo>::const_iterator itr = affectedNodes.begin(); itr != affectedNodes.end(); itr++) {
-				if (this->settings->bone != "")
+				bool bBallPoint = false;
+				if (strcmp((*itr).first->GetName(), "ball_point") == 0 && ballPointTime != 0.0f)
+				{
+					bBallPoint = true;
+				}
+				else if (this->settings->bone != "" )
 				{
 					if (strcmp((*itr).first->GetName(), this->settings->bone.c_str()) != 0)
 						continue;
@@ -724,10 +740,15 @@ namespace readers {
 				nodeAnim->scale = (*itr).second.scale;
 				const float stepSize = (*itr).second.framerate <= 0.f ? (*itr).second.stop - (*itr).second.start : 1000.f / (*itr).second.framerate;
 				const float last = (*itr).second.stop + stepSize * 0.5f;
+
+				float startTime = (*itr).second.start;
+				float endTime = last;
+				if (bBallPoint)
+					startTime = endTime = ballPointTime+animStart;
 				FbxTime fbxTime;
 				// Calculate all keyframes upfront
-				for (float time = (*itr).second.start; time <= last; time += stepSize) {
-					time = std::min(time, (*itr).second.stop);
+				for (float time = startTime; time <= endTime; time += stepSize) {
+					time = std::min(time, endTime);
 					fbxTime.SetMilliSeconds((FbxLongLong)time);
 					Keyframe *kf = new Keyframe();
 					kf->time = (time - animStart);

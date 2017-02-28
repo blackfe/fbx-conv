@@ -74,7 +74,10 @@ static const char* getTextureUseString(const Material::Texture::Usage &textureUs
 
 void Model::serialize(json::BaseJSONWriter &writer) const {
 	writer.obj(6);
-	writer << "animations" = animations;
+	for (std::vector<Animation*>::const_iterator iter = animations.begin(); iter != animations.end(); ++iter)
+	{
+		writer << (*iter)->id = (*iter);
+	}
 	writer.end();
 }
 
@@ -188,15 +191,17 @@ void NodePart::serialize(json::BaseJSONWriter &writer) const {
 
 void Animation::serialize(json::BaseJSONWriter &writer) const {
 	writer.obj(2);
-	writer << "id" = id;
 	writer << "time" = time;
-	writer << "bones" = nodeAnimations;
+	for (std::vector<NodeAnimation*>::const_iterator iter = nodeAnimations.begin(); iter != nodeAnimations.end(); ++iter)
+	{
+
+		writer << (*iter)->node->id = (*iter);
+	}
 	writer.end();
 }
 
 void NodeAnimation::serialize(json::BaseJSONWriter &writer) const {
 	writer.obj(2);
-	writer << "boneId" = node->id;
 	writer << "keyframes" = keyframes;
 	writer.end();
 }

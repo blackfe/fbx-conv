@@ -22,6 +22,7 @@
 #include "Settings.h"
 #include <string>
 #include "log/log.h"
+#include "csv/CSVparser.hpp"
 
 namespace fbxconv {
 
@@ -61,6 +62,10 @@ struct FbxConvCommand {
 					settings->packColors = true;
 				else if ((arg[1] == 'i') && (i + 1 < argc))
 					settings->inType = parseType(argv[++i]);
+				else if ((arg[1] == 'c') && (i + 1 < argc))
+					settings->csvFile = new csv::Parser(argv[++i]);
+				else if ((arg[1] == 'F') && (i + 1 < argc))
+					settings->frameRate = atoi(argv[++i]);
 				else if ((arg[1] == 'B') && (i + 1 < argc))
 					settings->bone = argv[++i];
 				else if ((arg[1] == 'o') && (i + 1 < argc))

@@ -21,7 +21,7 @@
 #define SETTINGS_H
 
 #include <string>
-
+#include "csv\CSVparser.hpp"
 namespace fbxconv {
 
 #define FILETYPE_AUTO			0x00
@@ -54,6 +54,8 @@ struct Settings {
 	int maxVertexCount;
 	/** The maximum allowed amount of indices in one mesh, only used when deciding to merge meshes. */
 	int maxIndexCount;
+	csv::Parser* csvFile;
+	int frameRate;
 };
 
 }

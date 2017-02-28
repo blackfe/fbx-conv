@@ -52,6 +52,7 @@ project "fbx-conv"
 	location (BUILD_DIR .. "/" .. _ACTION)
 	files {
 		"./src/**.c*",
+		"./src/**.hpp",
 		"./src/**.h",
 	}
 	includedirs {
